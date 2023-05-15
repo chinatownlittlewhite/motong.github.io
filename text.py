@@ -1,12 +1,14 @@
+import numpy as np
 import streamlit as st
 import torch
-import torchvision.transforms
-from PIL import Image
+import torchvision
+import PIL.Image as pil
+import torch.nn.functional as F
 from torch import nn
 import os
 from DMSHN import DMSHN
 jxnu_image_path="images\jxnu.png"
-jxnu_img=Image.open(jxnu_image_path)
+jxnu_img=pil.open(jxnu_image_path)
 st.image(jxnu_img)
 st.markdown("<h1 style='text-align: center;'>自监督多尺度金字塔融合网络,实现逼真的散景效果渲染效果展示</h1>", unsafe_allow_html=True)
 st.write('<p>Zhifeng Wang a, Aiwen Jiang a,*, Chunjie Zhang b, Hanxi Li a, Bo Liu c</p>', unsafe_allow_html=True)
@@ -17,7 +19,7 @@ st.markdown("<h2 style='text-align: center;'>散景虚化演示:</h2>", unsafe_a
 
 st.markdown("<h3 style='text-align: center;'>样例图片</h3>", unsafe_allow_html=True)
 demo_image_path="images\example.jpg"
-demo_image=Image.open(demo_image_path)
+demo_image=pil.open(demo_image_path)
 st.image(demo_image_path)
 
 
@@ -35,10 +37,19 @@ st.markdown("<h3 style='text-align: center;'>自定义图片处理</h3>", unsafe
 The_processed_image_path = st.file_uploader("请上传需要进行虚化的图片", type=["jpg","jpeg","png"])
 
 if The_processed_image_path is not None:
-    The_processed_image = Image.open(The_processed_image_path)
+    The_processed_image = pil.open(The_processed_image_path)
     st.write("<p>您上传的图像</p>", unsafe_allow_html=True)
     st.image(The_processed_image)
-    The_processed_image=bokehnet(The_processed_image)
+    with torch.no_grad():
+        # Load image and preprocess
+        input_image = pil.open(The_processed_image_path).convert('RGB')
+        original_width, original_height = input_image.size
+        input_image = input_image.resize((feed_width, feed_height), pil.LANCZOS)
+        input_image = torchvision.transforms.ToTensor()(input_image).unsqueeze(0)
+        input_image = input_image.to(device)
+        bok_pred = bokehnet(input_image)
+        bok_pred = F.interpolate(bok_pred, (original_height, original_width), mode='bilinear')
+        bok_pred = torchvision.transforms.functional.to_pil_image(bok_pred.squeeze())
     st.write("<p>虚化后的图像</p>", unsafe_allow_html=True)
-    st.image(The_processed_image)
+    st.image(bok_pred)
 
