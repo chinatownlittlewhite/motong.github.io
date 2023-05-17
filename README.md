@@ -1,2 +1,1 @@
-# chinatownlittlewhite.githun.io
-展示页面
+将这个项目在streamlit上部署即可得到一个对图像虚化的app
