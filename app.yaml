@@ -1,7 +1,32 @@
+# 指定使用的运行环境
 runtime: python
 env: flex
 
+# 指定 Python 版本
 runtime_config:
   python_version: 3
 
-entrypoint: streamlit run text.py --server.port $PORT
+# 在容器启动时执行的命令
+entrypoint: |
+  # 克隆 GitHub 仓库
+  git clone https://github.com/your_username/your_repo.git
+
+  # 进入该仓库目录
+  cd your_repo
+
+  # 安装 Python 依赖
+  pip install -r requirements.txt
+
+  # 运行 Streamlit 应用，并将输出端口指定为 $PORT
+  streamlit run text.py --server.port $PORT &
+
+  # 等待 Streamlit 应用启动完成
+  sleep 5
+
+  # 将生成的图片添加到 Git 仓库中
+  mv output.png static/output_$(date '+%Y-%m-%d_%H-%M-%S').png
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+  git add .
+  git commit -m "Add image"
+  git push origin main
