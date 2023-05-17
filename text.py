@@ -49,7 +49,7 @@ if The_processed_image_path is not None:
         input_image = input_image.to(device)
         bok_pred = bokehnet(input_image)
         bok_pred = F.interpolate(bok_pred, (original_height, original_width), mode='bilinear')
-        bok_pred = torchvision.transforms.functional.to_pil_image(bok_pred.squeeze())
+        bok_pred = pil.fromarray((bok_pred[0].cpu().numpy() * 255).astype('uint8'))
     st.write("<p>虚化后的图像</p>", unsafe_allow_html=True)
     st.image(bok_pred)
 
