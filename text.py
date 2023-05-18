@@ -7,12 +7,9 @@ import torch.nn.functional as F
 from torch import nn
 import os
 from DMSHN import DMSHN
-import base64
-import requests
-owner = "chinatownlittlewhite"
-repo = "chinatownlittlewhite.github.io"
-path = "images/output.png"
-branch = "main"
+from github import Github
+ACCESS_TOKEN = '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'
+repo = g.get_repo('chinatownwhite.github.io')
 jxnu_image_path="./images/jxnu.png"
 jxnu_img=pil.open(jxnu_image_path)
 st.image(jxnu_img)
@@ -55,15 +52,13 @@ if The_processed_image_path is not None:
         input_image = input_image.to(device)
         bok_pred = bokehnet(input_image)
         bok_pred = F.interpolate(bok_pred, (original_height, original_width), mode='bilinear')
-    if bok_pred is not None:
-        file_name = bok_pred.name
-        file_path = os.path.join("images", file_name)
-        with open(file_path, "wb") as f:
-            f.write(image_file.getbuffer())
-        with open(file_path, "rb") as f:
-            content = base64.b64encode(f.read()).decode("utf-8")
-            repo.create_file(file_path, f"Added {file_name}", content)
+pillow_image = pil.fromarray(bok_pred, 'RGB')
+buffer = BytesIO()
+pillow_image.save(buffer, format="PNG")
+image_bytes = buffer.getvalue()
+contents = repo.create_file('images/output.png', 'commit-message', image_bytes)
+image_url = contents.content.download_url
     st.write("<p>虚化后的图像</p>", unsafe_allow_html=True)
-    bok_pred = pil.open(file_path)
+    bok_pred = pil.open(image_url)
     st.image(bok_pred)
 
