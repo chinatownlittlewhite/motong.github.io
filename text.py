@@ -9,7 +9,7 @@ import os
 from DMSHN import DMSHN
 from github import Github
 ACCESS_TOKEN = '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'
-repo = g.get_repo('chinatownwhite.github.io')
+repo = github.get_repo('chinatownwhite.github.io')
 jxnu_image_path="./images/jxnu.png"
 jxnu_img=pil.open(jxnu_image_path)
 st.image(jxnu_img)
