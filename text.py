@@ -49,9 +49,15 @@ if The_processed_image_path is not None:
         input_image = input_image.to(device)
         bok_pred = bokehnet(input_image)
         bok_pred = F.interpolate(bok_pred, (original_height, original_width), mode='bilinear')
-        save_image(bok_pred,'./images/output.png')
+    if bok_pred is not None:
+        file_name = bok_pred.name
+        file_path = os.path.join("images", file_name)
+        with open(file_path, "wb") as f:
+            f.write(image_file.getbuffer())
+        with open(file_path, "rb") as f:
+            content = base64.b64encode(f.read()).decode("utf-8")
+            repo.create_file(file_path, f"Added {file_name}", content)
     st.write("<p>虚化后的图像</p>", unsafe_allow_html=True)
-    boke_pred_path = "./images/output.png"
-    bok_pred = pil.open(boke_pred_path)
+    bok_pred = pil.open(file_path)
     st.image(bok_pred)
 
