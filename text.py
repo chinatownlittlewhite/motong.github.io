@@ -10,7 +10,7 @@ import os
 from torchvision.utils import save_image
 
 from DMSHN import DMSHN
-jxnu_image_path="images\jxnu.png"
+jxnu_image_path="images/jxnu.png"
 jxnu_img=pil.open(jxnu_image_path)
 st.image(jxnu_img)
 st.markdown("<h1 style='text-align: center;'>自监督多尺度金字塔融合网络,实现逼真的散景效果渲染效果展示</h1>", unsafe_allow_html=True)
@@ -19,7 +19,7 @@ st.markdown("<h3 style='text-align: center;'>简介</h3>", unsafe_allow_html=Tru
 st.write("<p style='text-align: center;'>**************简介内容************</p>", unsafe_allow_html=True)
 st.markdown("<h2 style='text-align: center;'>散景虚化演示:</h2>", unsafe_allow_html=True)
 st.markdown("<h3 style='text-align: center;'>样例图片</h3>", unsafe_allow_html=True)
-demo_image_path="images\example.jpg"
+demo_image_path="images/example.jpg"
 demo_image=pil.open(demo_image_path)
 st.image(demo_image_path)
 st.markdown("<h3 style='text-align: center;'>样例视频</h3>", unsafe_allow_html=True)
