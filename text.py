@@ -52,12 +52,12 @@ if The_processed_image_path is not None:
         input_image = input_image.to(device)
         bok_pred = bokehnet(input_image)
         bok_pred = F.interpolate(bok_pred, (original_height, original_width), mode='bilinear')
-pillow_image = pil.fromarray(bok_pred, 'RGB')
-buffer = BytesIO()
-pillow_image.save(buffer, format="PNG")
-image_bytes = buffer.getvalue()
-contents = repo.create_file('images/output.png', 'commit-message', image_bytes)
-image_url = contents.content.download_url
+    pillow_image = pil.fromarray(bok_pred, 'RGB')
+    buffer = BytesIO()
+    pillow_image.save(buffer, format="PNG")
+    image_bytes = buffer.getvalue()
+    contents = repo.create_file('images/output.png', 'commit-message', image_bytes)
+    image_url = contents.content.download_url
     st.write("<p>虚化后的图像</p>", unsafe_allow_html=True)
     bok_pred = pil.open(image_url)
     st.image(bok_pred)
