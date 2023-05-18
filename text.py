@@ -7,6 +7,12 @@ import torch.nn.functional as F
 from torch import nn
 import os
 from DMSHN import DMSHN
+import base64
+import requests
+owner = "chinatownlittlewhite"
+repo = "chinatownlittlewhite.github.io"
+path = "images/output.png"
+branch = "main"
 jxnu_image_path="./images/jxnu.png"
 jxnu_img=pil.open(jxnu_image_path)
 st.image(jxnu_img)
