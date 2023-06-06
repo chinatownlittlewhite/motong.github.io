@@ -23,7 +23,7 @@ demo_image_path="images/example.jpg"
 demo_image=pil.open(demo_image_path)
 st.image(demo_image_path)
 st.markdown("<h3 style='text-align: center;'>样例视频</h3>", unsafe_allow_html=True)
-demo_video_path="https://colab.research.google.com/drive/1zl2_QOWjoWaN0bzDHSKJETkDgIiI62d0?usp=sharing"
+demo_video_path="images/demo.gif"
 st.video(demo_video_path)
 device = torch.device("cpu")
 feed_width = 1536
